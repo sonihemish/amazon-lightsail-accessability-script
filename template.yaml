@@ -24,3 +24,4 @@ Outputs:
   InstancePublicIP:
     Description: The public IP address of the Lightsail instance
     Value: !GetAtt LightsailInstance.PublicIpAddress
+
