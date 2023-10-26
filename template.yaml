@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Template enables narrator on lightsail windows instance
+
+Parameters:
+  UserIPAddress:
+    Description: The user's IP address (CIDR notation) to allow access from (e.g., 1.2.3.4/32)
+    Type: String
+
+Resources:
+  LightsailInstance:
+    Type: AWS::Lightsail::Instance
+    Properties:
+      AvailabilityZone: "eu-west-2a"
+      BundleId: "large_win_3_0"
+      InstanceName : "myServer"
+      BlueprintId  : "windows_server_2022"
+      UserData : |
+          <script>
+            net start audiosrv
+            reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Accessibility" /t REG_SZ /v Configuration /d narrator /f
+            narrator
+          </script>
+Outputs:
+  InstancePublicIP:
+    Description: The public IP address of the Lightsail instance
+    Value: !GetAtt LightsailInstance.PublicIpAddress
